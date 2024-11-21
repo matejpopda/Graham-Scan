@@ -4,7 +4,7 @@ import typing
 import dataclasses
 import random
 
-POINT_SIZE = 5
+POINT_SIZE = 20
 
 
 @dataclasses.dataclass
@@ -29,34 +29,34 @@ class canvasWrapper:
         self.sorted: bool = False
         self.position: int = 0
         self.lowest_point: Point | None = None
+        self.do_enumeration: bool = False
 
     def draw(self):
         self.canvas.delete("all")
 
-        def transform_y_coord(y):
-            return y
-            return self.canvas.winfo_reqheight() - y
-
         def draw_line(line: Line, dash=(1), fill="black"):
             self.canvas.create_line(
                 line.a.x,
-                transform_y_coord(line.a.y),
+                line.a.y,
                 line.b.x,
-                transform_y_coord(line.b.y),
+                line.b.y,
                 dash=dash,
                 fill=fill,
             )
 
-        def draw_point(point: Point, size):
+        def draw_point(point: Point, size, number_to_print):
             x = point.x
-            y = transform_y_coord(point.y)
+            y = point.y
 
             self.canvas.create_oval(x - size, y - size, x + size, y + size)
 
+            if self.do_enumeration:
+                self.canvas.create_text(x,y, text=number_to_print)
+
         for i in range(len(self.points)):
             point = self.points[i]
-            size = POINT_SIZE / 2 * (i + 1)
-            draw_point(point, size)
+            size = POINT_SIZE / 2
+            draw_point(point, size, i)
 
         for line in self.current_boundary:
             draw_line(line)
@@ -79,11 +79,11 @@ def clear_canvas(canvas: canvasWrapper):
     canvas.position = 0
 
 
-def random_points(canvas: canvasWrapper):
+def random_points(canvas: canvasWrapper, how_many):
     boundaryx = canvas.canvas.winfo_reqwidth()
     boundaryy = canvas.canvas.winfo_reqheight()
 
-    for _ in range(10):
+    for _ in range(how_many):
         x = random.uniform(boundaryx * 0.1, boundaryx * 0.9)
         y = random.uniform(boundaryy * 0.1, boundaryy * 0.9)
 
