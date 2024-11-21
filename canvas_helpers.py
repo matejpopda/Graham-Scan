@@ -84,11 +84,15 @@ def random_points(canvas: canvasWrapper):
     boundaryy = canvas.canvas.winfo_reqheight()
 
     for _ in range(10):
-        x = random.uniform(boundaryx * 0.2, boundaryx * 0.8)
-        y = random.uniform(boundaryy * 0.2, boundaryy * 0.8)
+        x = random.uniform(boundaryx * 0.1, boundaryx * 0.9)
+        y = random.uniform(boundaryy * 0.1, boundaryy * 0.9)
 
         canvas.points.append(Point(x, y))
 
+    canvas.draw()
+
+def point_at_coords(canvas: canvasWrapper, x, y):
+    canvas.points.append(Point(x,y))
     canvas.draw()
 
 

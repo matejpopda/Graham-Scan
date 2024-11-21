@@ -9,7 +9,7 @@ CANVAS_DIMENSIONS = 500
 window = tkinter.Tk()
 form = ttk.Frame(window, padding=10)
 form.grid()
-ttk.Label(form, text="Hello World!").grid(column=0, row=0)
+ttk.Label(form, text="Click to Add Points!").grid(column=0, row=0)
 
 
 canvas = tkinter.Canvas(
@@ -72,6 +72,16 @@ def initial_state():
     animate_scan_button.config(state=DISABLED)
     do_graham_scan_button.config(state=DISABLED)
 
+def on_click(event):
+    canvas_helpers.point_at_coords(wrapper, event.x, event.y)
+
+    if len(wrapper.points) < 2:
+        return
+    
+    one_step_button.config(state=NORMAL)
+    animate_scan_button.config(state=NORMAL)
+    do_graham_scan_button.config(state=NORMAL)
+
 add_points_button = ttk.Button(
     form,
     text="Add random points",
@@ -107,6 +117,7 @@ ttk.Button(form, text="Quit", command=window.destroy).grid(column=2, row=10)
 
 
 
+canvas.bind("<Button-1>", on_click)
 
 
 initial_state()
