@@ -102,14 +102,14 @@ def graham_step_no_draw(canvas: canvasWrapper) -> bool:
 
         def sorter(point: Point):
             if canvas.lowest_point == point:
-                return -100
+                return 100
             x = point.x - canvas.lowest_point.x
             y = point.y - canvas.lowest_point.y
             res = (1 * x + 0 * y) / ((1) * (pow(x * x + y * y, 1 / 2)))
             # print(res)
             return res
 
-        canvas.points.sort(key=sorter, reverse=False)
+        canvas.points.sort(key=sorter, reverse=True)
         canvas.sorted = True
         canvas.position = 2
 
@@ -145,11 +145,12 @@ def cross_product(line1: Line, line2: Line):
     ) * (line2.b.x - line1.a.x)
 
 
+# Actually finds the highest because the coordinate system is reversed
 def find_lowest_point(canvas: canvasWrapper) -> None:
     lowest = canvas.points[0]
 
     for i in canvas.points:
-        if i.y < lowest.y:
+        if i.y > lowest.y:
             lowest = i
 
     canvas.lowest_point = lowest
