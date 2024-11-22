@@ -1,9 +1,7 @@
 import tkinter
 import tkinter.ttk as ttk
-from tkinter.font import Font
 from tkinter import DISABLED, NORMAL
 import canvas_helpers
-import tkinter.font as tkFont
 
 
 CANVAS_DIMENSIONS = 500
@@ -11,7 +9,7 @@ CANVAS_DIMENSIONS = 500
 
 window = tkinter.Tk()
 
-
+window.title("Graham sort")
 
 how_many_random_points = tkinter.IntVar(value='10')
 animation_delay = tkinter.IntVar(value='100')
@@ -133,8 +131,14 @@ add_points_button = ttk.Button(
 add_points_button.grid(column=2, row=1)
 
 
-random_settings_spinbox = ttk.Spinbox(form,from_=2, to=100, increment=5, textvariable=how_many_random_points, width=5)
-random_settings_spinbox.grid(column=2, row=2)
+random_settings_frame = ttk.Frame(form)
+random_settings_frame.grid(column=2, row=2)
+
+random_settings_spinbox = ttk.Spinbox(random_settings_frame,from_=2, to=100, increment=5, textvariable=how_many_random_points, width=5)
+random_settings_spinbox.pack(side= tkinter.RIGHT)
+
+random_settings_label = ttk.Label(random_settings_frame, text="Number of random\n points to add:",justify="center")
+random_settings_label.pack(side=tkinter.LEFT, padx=10)
 
 do_graham_scan_button = ttk.Button(
     form,
@@ -148,8 +152,17 @@ animate_scan_button.grid(
     column=2, row=4
 )
 
-animate_settings_spinbox = ttk.Spinbox(form,from_=1, to=1000, increment=100, textvariable=animation_delay, width=5)
-animate_settings_spinbox.grid(column=2, row=5)
+
+animate_settings_frame = ttk.Frame(form)
+animate_settings_frame.grid(column=2, row=5)
+
+animate_settings_spinbox = ttk.Spinbox(animate_settings_frame,from_=1, to=1000, increment=100, textvariable=animation_delay, width=5)
+animate_settings_spinbox.pack(side= tkinter.RIGHT)
+
+animate_settings_label = ttk.Label(animate_settings_frame, text="Milliseconds between frames\n of animation:",justify="center")
+animate_settings_label.pack(side=tkinter.LEFT, padx=10)
+
+
 
 
 one_step_button = ttk.Button(
@@ -158,7 +171,7 @@ one_step_button = ttk.Button(
 one_step_button.grid(column=2, row=6)
 
 enumerate_button = ttk.Checkbutton(
-    form, text="Enumerate Points According to \nhow they are in the array", command=enumerate_points, variable=enumeration
+    form, text="Enable point enumeration", command=enumerate_points, variable=enumeration,
 )
 
 enumerate_button.grid(column=2, row=7)
