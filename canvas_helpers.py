@@ -30,11 +30,22 @@ class canvasWrapper:
         self.position: int = 0
         self.lowest_point: Point | None = None
         self.do_enumeration: bool = False
+        self.allow_click_input = True
+
+    def add_point(self, point:Point):
+        for i in self.points:
+            if i.x == point.x and i.y == point.y:
+                return
+        self.points.append(point)
+        
+
+    
+
 
     def draw(self):
         self.canvas.delete("all")
 
-        def draw_line(line: Line, dash=(1), fill="black"):
+        def draw_line(line: Line, dash=(1), fill="black", width=7):
             self.canvas.create_line(
                 line.a.x,
                 line.a.y,
@@ -42,6 +53,7 @@ class canvasWrapper:
                 line.b.y,
                 dash=dash,
                 fill=fill,
+                width=width
             )
 
         def draw_point(point: Point, size, number_to_print):
@@ -59,17 +71,19 @@ class canvasWrapper:
             draw_point(point, size, i)
 
         for line in self.current_boundary:
-            draw_line(line)
-
-        for line in self.lines_on_stack:
-            draw_line(line, dash=(1), fill="green")
+            draw_line(line, dash=None)
 
         for line in self.removed_lines:
-            draw_line(line, dash=(1, 2), fill="red")
+            draw_line(line, dash=(1, 2), fill="red", width=3)
+
+        for line in self.lines_on_stack:
+            draw_line(line, dash=(1), fill="green", width=5)
 
 
-def clear_canvas(canvas: canvasWrapper):
-    canvas.points = []
+
+def clear_canvas(canvas: canvasWrapper, keep_points=False):
+    if not keep_points:
+        canvas.points = []
     canvas.current_boundary = []
     canvas.lines_on_stack = []
     canvas.removed_lines = []
@@ -84,15 +98,15 @@ def random_points(canvas: canvasWrapper, how_many):
     boundaryy = canvas.canvas.winfo_reqheight()
 
     for _ in range(how_many):
-        x = random.uniform(boundaryx * 0.1, boundaryx * 0.9)
-        y = random.uniform(boundaryy * 0.1, boundaryy * 0.9)
+        x = int(random.uniform(boundaryx * 0.1, boundaryx * 0.9))
+        y = int(random.uniform(boundaryy * 0.1, boundaryy * 0.9))
 
-        canvas.points.append(Point(x, y))
+        canvas.add_point(Point(x, y))
 
     canvas.draw()
 
 def point_at_coords(canvas: canvasWrapper, x, y):
-    canvas.points.append(Point(x,y))
+    canvas.add_point(Point(x,y))
     canvas.draw()
 
 
@@ -118,6 +132,8 @@ def graham_step_no_draw(canvas: canvasWrapper) -> bool:
 
     if canvas.position == len(canvas.points):
         canvas.lines_on_stack.append(Line(canvas.points[-1], canvas.points[0]))
+
+        canvas.current_boundary = canvas.lines_on_stack.copy()
         return True
 
     if canvas.position > len(canvas.points) - 1:
