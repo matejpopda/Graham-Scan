@@ -6,6 +6,7 @@ import random
 
 POINT_SIZE = 20
 
+random.seed("hjhj")
 
 @dataclasses.dataclass
 class Point:
@@ -122,8 +123,8 @@ def sort_points(canvas: canvasWrapper):
         def sorter(point: Point):
             if canvas.lowest_point == point:
                 return 100
-            x = point.x - canvas.lowest_point.x
-            y = point.y - canvas.lowest_point.y
+            x = (point.x - canvas.lowest_point.x) 
+            y = (point.y - canvas.lowest_point.y) 
             res = (1 * x + 0 * y) / ((1) * (pow(x * x + y * y, 1 / 2)))
             # print(res)
             return res
@@ -156,7 +157,7 @@ def graham_step_no_draw(canvas: canvasWrapper) -> bool:
 
     canvas.lines_on_stack.append(Line(canvas.lines_on_stack[-1].b, current_point))
 
-    if cross_product(canvas.lines_on_stack[-2], canvas.lines_on_stack[-1]) > 0:
+    if cross_product(canvas.lines_on_stack[-2], canvas.lines_on_stack[-1]) >= 0:
         canvas.removed_lines.append(canvas.lines_on_stack.pop())
         canvas.removed_lines.append(canvas.lines_on_stack.pop())
         return False
