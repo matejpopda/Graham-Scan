@@ -103,15 +103,20 @@ def random_points(canvas: canvasWrapper, how_many):
 
         canvas.add_point(Point(x, y))
 
+    canvas.sorted = False
+    sort_points(canvas)
+    canvas.sorted = False
     canvas.draw()
 
 def point_at_coords(canvas: canvasWrapper, x, y):
     canvas.add_point(Point(x,y))
+
+    sort_points(canvas)
+    canvas.sorted = False
     canvas.draw()
 
 
-def graham_step_no_draw(canvas: canvasWrapper) -> bool:
-    if not canvas.sorted:
+def sort_points(canvas: canvasWrapper):
         find_lowest_point(canvas)
 
         def sorter(point: Point):
@@ -125,10 +130,18 @@ def graham_step_no_draw(canvas: canvasWrapper) -> bool:
 
         canvas.points.sort(key=sorter, reverse=True)
         canvas.sorted = True
-        canvas.position = 2
 
+        return False
+
+def graham_step_no_draw(canvas: canvasWrapper) -> bool:
+    if not canvas.sorted:
+        sort_points(canvas)
+      
+        canvas.position = 2  
         canvas.lines_on_stack.append(Line(canvas.points[0], canvas.points[1]))
         return False
+
+
 
     if canvas.position == len(canvas.points):
         canvas.lines_on_stack.append(Line(canvas.points[-1], canvas.points[0]))

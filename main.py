@@ -9,7 +9,7 @@ CANVAS_DIMENSIONS = 500
 
 window = tkinter.Tk()
 
-window.title("Graham sort")
+window.title("Graham Scan")
 
 how_many_random_points = tkinter.IntVar(value='10')
 animation_delay = tkinter.IntVar(value='100')
@@ -147,7 +147,7 @@ do_graham_scan_button = ttk.Button(
 )
 do_graham_scan_button.grid(column=2, row=3)
 
-animate_scan_button = ttk.Button(form, text="Animate Graham Sort", command=animate)
+animate_scan_button = ttk.Button(form, text="Animate Graham Scan", command=animate)
 animate_scan_button.grid(
     column=2, row=4
 )
