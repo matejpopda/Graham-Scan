@@ -198,4 +198,9 @@ canvas.bind("<Button-1>", on_click)
 
 
 initial_state()
+
+
+
+
+
 window.mainloop()
