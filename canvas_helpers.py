@@ -120,6 +120,11 @@ def point_at_coords(canvas: canvasWrapper, x, y):
 def sort_points(canvas: canvasWrapper):
         find_lowest_point(canvas)
 
+        def distance_sorter(point: Point):
+            return (canvas.lowest_point.x - point.x)**2 + (canvas.lowest_point.y - point.y)**2
+
+        # canvas.points.sort(key=distance_sorter, reverse=True)
+
         def sorter(point: Point):
             if canvas.lowest_point == point:
                 return 100
